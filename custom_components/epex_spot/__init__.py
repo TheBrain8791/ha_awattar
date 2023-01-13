@@ -6,9 +6,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.event import async_track_time_interval
 
-from .const import (CONF_MARKET_AREA, CONF_SOURCE, CONF_SOURCE_AWATTAR,
-                    CONF_SOURCE_EPEX_SPOT_WEB, DOMAIN)
-from .EPEXSpot import Awattar, EPEXSpotWeb
+from .const import (CONF_MARKET_AREA, CONF_TIMEZONE, CONF_VAT, CONF_ENERGYPLAN_ADDITION, DOMAIN)
+from .Awattar import Awattar_API
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ PLATFORMS = ["sensor"]
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up component from a config entry, config_entry contains data from config entry database."""
     # store shell object
-    shell = hass.data.setdefault(DOMAIN, EpexSpotShell(hass))
+    shell = hass.data.setdefault(DOMAIN, AwattarEnergyCost(hass))
 
     # add market area to shell
     shell.add_entry(entry)
@@ -44,8 +43,8 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     return unload_ok
 
 
-class EpexSpotShell:
-    """Shell object for EPEX Spot. Stored in hass.data."""
+class AwattarEnergyCost:
+    """Shell object for Awattar Energy Cost. Stored in hass.data."""
 
     def __init__(self, hass: HomeAssistant):
         """Initialize the instance."""
@@ -65,13 +64,8 @@ class EpexSpotShell:
 
             # async_track_time_change(hass, action, hour=None, minute=None, second=None):
 
-        if config_entry.data[CONF_SOURCE] == CONF_SOURCE_AWATTAR:
-            source = Awattar.Awattar(market_area=config_entry.data[CONF_MARKET_AREA])
-        elif config_entry.data[CONF_SOURCE] == CONF_SOURCE_EPEX_SPOT_WEB:
-            source = EPEXSpotWeb.EPEXSpotWeb(
-                market_area=config_entry.data[CONF_MARKET_AREA]
-            )
-
+            source = Awattar_API.Awattar(market_area=config_entry.data[CONF_MARKET_AREA],time_zone=config_entry.data[CONF_TIMEZONE])
+        
         self._hass.add_job(source.fetch)
 
         self._sources[config_entry.unique_id] = source

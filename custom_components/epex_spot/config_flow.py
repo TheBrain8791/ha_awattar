@@ -2,17 +2,18 @@
 
 Used by UI to setup integration.
 """
+from typing import Optional
 import voluptuous as vol
 from homeassistant import config_entries
 
-from .const import (CONF_MARKET_AREA, CONF_SOURCE, CONF_SOURCE_AWATTAR,
-                    CONF_SOURCE_EPEX_SPOT_WEB, DOMAIN)
-from .EPEXSpot import Awattar, EPEXSpotWeb
+from .const import (CONF_ENERGYPLAN_ADDITION, CONF_MARKET_AREA, CONF_TIMEZONE, CONF_VAT,
+                    DOMAIN)
+from .Awattar import Awattar_API
 
-CONF_SOURCE_LIST = (CONF_SOURCE_AWATTAR, CONF_SOURCE_EPEX_SPOT_WEB)
-
-
-class EpexSpotConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
+CONF_DEFAULT_ENERGYPLAN_ADDITION = 3
+CONF_DEFAULT_TIMEZONE = "Europe/Vienna"
+CONF_DEFAULT_VAT = 20
+class AwattarEnergyCostConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore
     """Component config flow."""
 
     VERSION = 1
@@ -29,38 +30,40 @@ class EpexSpotConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ign
         This function is also called if the form has been submitted. user_input
         contains a dict with the user entered values then.
         """
-        # query top level source
-        data_schema = vol.Schema(
-            {vol.Required(CONF_SOURCE): vol.In(sorted(CONF_SOURCE_LIST))}
-        )
-
-        return self.async_show_form(step_id="source", data_schema=data_schema)
-
-    async def async_step_source(self, user_input=None):
-        self._source_name = user_input[CONF_SOURCE]
-
-        if self._source_name == CONF_SOURCE_AWATTAR:
-            areas = Awattar.Awattar.MARKET_AREAS
-        elif self._source_name == CONF_SOURCE_EPEX_SPOT_WEB:
-            areas = EPEXSpotWeb.EPEXSpotWeb.MARKET_AREAS
+        
+        areas = Awattar.Awattar_API.MARKET_AREAS        
 
         data_schema = vol.Schema(
-            {vol.Required(CONF_MARKET_AREA): vol.In(sorted(areas))}
+            {
+                vol.Required(CONF_MARKET_AREA): vol.In(sorted(areas)),
+                vol.Optional(CONF_TIMEZONE, default=CONF_DEFAULT_TIMEZONE): str,
+                vol.Required(CONF_VAT, default=CONF_DEFAULT_VAT): vol.All(vol.Coerce(float), vol.Range(min=0,max=100)),
+                vol.Required(CONF_ENERGYPLAN_ADDITION, default=CONF_DEFAULT_ENERGYPLAN_ADDITION): vol.All(vol.Coerce(float), vol.Range(min=0,max=100))
+            }
         )
 
-        return self.async_show_form(step_id="market_area", data_schema=data_schema)
+        return self.async_show_form(step_id="cfg_values", data_schema=data_schema)
+                   
 
-    async def async_step_market_area(self, user_input=None):
+    async def async_step_cfg_values(self, user_input=None):
         if user_input is not None:
             # create an entry for this configuration
             market_area = user_input[CONF_MARKET_AREA]
-            title = f"{self._source_name} ({market_area})"
+            sel_timezone = user_input[CONF_TIMEZONE]
+            apply_vat = user_input[CONF_VAT]
+            apply_energyplan_add = user_input[CONF_ENERGYPLAN_ADDITION]
+            title = f"Awattar ({market_area})"
 
-            unique_id = f"{DOMAIN} {self._source_name} {market_area}"
+            unique_id = f"{DOMAIN} Awattar {market_area}"
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
 
             return self.async_create_entry(
                 title=title,
-                data={CONF_SOURCE: self._source_name, CONF_MARKET_AREA: market_area},
+                data={
+                        CONF_MARKET_AREA: market_area, 
+                        CONF_TIMEZONE: sel_timezone, 
+                        CONF_VAT: apply_vat,
+                        CONF_ENERGYPLAN_ADDITION: apply_energyplan_add
+                    }
             )

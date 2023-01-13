@@ -1,11 +1,9 @@
 """Constants for the component."""
 
 # Component domain, used to store component data in hass data.
-DOMAIN = "epex_spot"
+DOMAIN = "awattar_energy_cost"
 
-CONF_SOURCE = "source"
 CONF_MARKET_AREA = "market_area"
-
-# possible values for CONF_SOURCE
-CONF_SOURCE_AWATTAR = "Awattar"
-CONF_SOURCE_EPEX_SPOT_WEB = "EPEX Spot Web Scraper"
+CONF_TIMEZONE = "timezone"
+CONF_VAT = "applyable_vat[%]"
+CONF_ENERGYPLAN_ADDITION = "applyable_energyplan_addition[%]"

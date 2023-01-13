@@ -1,12 +1,12 @@
 {
-  "domain": "epex_spot",
-  "name": "EPEX Spot",
+  "domain": "awattar energy cost",
+  "name": "Awattar Energy Cost",
   "config_flow": true,
   "requirements": ["bs4"],
   "dependencies": [],
-  "documentation": "https://github.com/mampfes/hacs_epex_spot",
-  "issue_tracker": "https://github.com/mampfes/hacs_epex_spot/issues",
-  "codeowners": ["@mampfes"],
+  "documentation": "https://github.com/TheBrain8791/ha_awattar",
+  "issue_tracker": "https://github.com/TheBrain8791/ha_awattar/issues",
+  "codeowners": ["@TheBrain8791"],
   "iot_class": "cloud_polling",
-  "version": "1.0.0"
+  "version": "0.1.0"
 }
