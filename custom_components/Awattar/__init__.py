@@ -7,7 +7,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.event import async_track_time_interval
 
 from .const import (CONF_MARKET_AREA, CONF_TIMEZONE, CONF_VAT, CONF_ENERGYPLAN_ADDITION, DOMAIN)
-from .Awattar import Awattar_API
+from .Awattar_API import Awattar
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ class AwattarEnergyCost:
 
             # async_track_time_change(hass, action, hour=None, minute=None, second=None):
 
-            source = Awattar_API.Awattar(market_area=config_entry.data[CONF_MARKET_AREA],time_zone=config_entry.data[CONF_TIMEZONE])
+            source = Awattar(market_area=config_entry.data[CONF_MARKET_AREA],time_zone=config_entry.data[CONF_TIMEZONE])
         
         self._hass.add_job(source.fetch)
 

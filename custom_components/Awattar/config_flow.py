@@ -8,7 +8,7 @@ from homeassistant import config_entries
 
 from .const import (CONF_ENERGYPLAN_ADDITION, CONF_MARKET_AREA, CONF_TIMEZONE, CONF_VAT,
                     DOMAIN)
-from .Awattar import Awattar_API
+from .Awattar_API import Awattar
 
 CONF_DEFAULT_ENERGYPLAN_ADDITION = 3
 CONF_DEFAULT_TIMEZONE = "Europe/Vienna"
@@ -31,7 +31,7 @@ class AwattarEnergyCostConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # 
         contains a dict with the user entered values then.
         """
         
-        areas = Awattar.Awattar_API.MARKET_AREAS        
+        areas = Awattar.MARKET_AREAS        
 
         data_schema = vol.Schema(
             {

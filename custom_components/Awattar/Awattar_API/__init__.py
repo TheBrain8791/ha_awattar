@@ -27,8 +27,8 @@ class Marketprice:
             data["end_timestamp"] / 1000, tz=time_zone.Get_TzUtcOffset()
         )
         self._price_eur_per_mwh = float(data["marketprice"])
-        self._price_vat = float(vat)
-        self._price_energyplan_add = float(energyplan_addition)
+        self._price_vat = ( float(vat) + 100 ) / 100
+        self._price_energyplan_add = ( float(energyplan_addition) + 100 ) / 100
 
     def __repr__(self):
         return f"{self.__class__.__name__}(start: {self._start_time.isoformat()}, end: {self._end_time.isoformat()}, marketprice: {self._price_ct_per_kwh} {self.UOM_CT_PER_KWh})"
@@ -43,7 +43,7 @@ class Marketprice:
 
     @property
     def price_eur_per_mwh(self):
-        return self._price_eur_per_mwh * self._price_energyplan_add * self._price_vat
+        return self._price_eur_per_mwh * self._price_energyplan_add * self._price_vat 
 
     @property
     def price_ct_per_kwh(self):

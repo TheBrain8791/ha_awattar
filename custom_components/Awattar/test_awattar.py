@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from Awattar import Awattar_API
+from Awattar_API import Awattar
 
-service = Awattar_API.Awattar(market_area="at")
+service = Awattar(market_area="at",time_zone="Europe/Vienna", vat=20, energyplan_addition=3)
 print(service.MARKET_AREAS)
 
 service.fetch()
