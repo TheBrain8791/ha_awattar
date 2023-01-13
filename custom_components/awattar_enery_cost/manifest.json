@@ -1,5 +1,5 @@
 {
-  "domain": "awattar energy cost",
+  "domain": "awattar_energy_cost",
   "name": "Awattar Energy Cost",
   "config_flow": true,
   "requirements": ["bs4"],
