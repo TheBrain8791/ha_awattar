@@ -64,7 +64,7 @@ class AwattarEnergyCost:
 
             # async_track_time_change(hass, action, hour=None, minute=None, second=None):
 
-            source = Awattar(market_area=config_entry.data[CONF_MARKET_AREA],time_zone=config_entry.data[CONF_TIMEZONE])
+            source = Awattar(market_area=config_entry.data[CONF_MARKET_AREA],time_zone=config_entry.data[CONF_TIMEZONE],vat=config_entry.data[CONF_VAT], energyplan_addition=config_entry.data[CONF_ENERGYPLAN_ADDITION])
         
         self._hass.add_job(source.fetch)
 

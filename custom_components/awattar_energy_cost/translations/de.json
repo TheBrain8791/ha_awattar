@@ -1,0 +1,19 @@
+{    
+    "config": {
+      "step": {
+        "cfg_values": {
+          "title": "Awattar Energiekosten Konfiguration",
+          "data": {
+            "market_area": "Datenquelle/Land auswählen",
+            "timezone" : "Zeitzone",
+            "applyable_vat" : "MwSt [ %  /kWh ]",
+            "applyable_energyplan_addition" : "Energietarif Aufschlag [ % / kWh ]"
+          }
+        }
+      },
+      "abort": {
+        "already_configured": "Dieser Sensor ist bereits konfiguriert.",
+        "fetch_failed": "Datenabfrage fehlgeschlagen."
+      }
+    }
+  }

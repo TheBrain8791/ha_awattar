@@ -1,0 +1,19 @@
+{    
+    "config": {
+      "step": {
+        "cfg_values": {
+          "title": "Awattar Energy Cost Cfg",
+          "data": {
+            "market_area": "Select data source/country",
+            "timezone" : "Timezone",
+            "applyable_vat" : "Applyable VAT [ % / kWh ]",
+            "applyable_energyplan_addition" : "Energyplan surcharge [ % / kWh ]"
+          }
+        }
+      },
+      "abort": {
+        "already_configured": "This market area is already configured.",
+        "fetch_failed": "Failed to fetch data."
+      }
+    }
+  }
