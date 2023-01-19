@@ -10,6 +10,8 @@ Therfore an api is provided from [Awattar](https://www.awattar.de/services/api) 
 
 ## Installation
 
+Note: this repo needs to be added to HACS store - until this is done, you can still install it using HACS by adding this repo as a "user defined" repository
+
 1. Ensure that [HACS](https://hacs.xyz) is installed.
 2. Install **Awattar Energy Cost** integration via HACS.
 3. Add **Awattar Energy Cost** integration to Home Assistant:
